@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  ws-ng7x-client:
+    restart: always
+    container_name: ws-ng7x-client-container
+    build:
+      context: ./ws-ng7x-client
+      dockerfile: ./Dockerfile.dev
+    image: local/ws-ng7x-client-dev-image:latest
+    command: ["npm", "start"]
+    volumes:
+      - ./ws-ng7x-client/src:/app/src
+      - ./ws-ng7x-client/angular.json:/app/angular.json
+      - ./ws-ng7x-client/tsconfig.json:/app/tsconfig.json
+      - ./ws-ng7x-client/tslint.json:/app/tslint.json
+    ports:
+      - '4200:4200'
+
+  mongo:
+    image: 'bitnami/mongodb:4.1'
+    restart: always
+    container_name: "mongo"
+    ports:
+      - "27017:27017"
+
+  ws-node-demo:
+    restart: always
+    build:
+      context: ./ws-node-demo
+      dockerfile: ./Dockerfile.dev
+    image: local-ws-node-demo:latest
+    command: ['npm', 'run', 'start:dev']
+    container_name: ws-node-demo-container
+    environment:
+        - loglevel=none
+    links:
+        - mongo
+    working_dir: "/usr/src/app"
+    volumes:
+        - ./ws-node-demo/.:/usr/src/app
+        - "/usr/src/app/node_modules"
+    ports:
+        - "8080:8080"
+        - "5858:5858"
+

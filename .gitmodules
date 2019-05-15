@@ -1,0 +1,8 @@
+[submodule "ws-node-demo"]
+	path = ws-node-demo
+	url = git@github.com-WillStreeter_Personal:WillStreeter/ws-node-demo
+	branch = master
+[submodule "ws-ng7x-client"]
+	path = ws-ng7x-client
+	url = git@github.com-WillStreeter_Personal:WillStreeter/ws-ng7x-client.git
+	branch = master
